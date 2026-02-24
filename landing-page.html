@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrimeInvest · real assets, real returns</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #f5f8fc;
+            color: #162b3a;
+            line-height: 1.5;
+        }
+
+        /* header dark */
+        header {
+            background: #0c2638;
+            color: white;
+            padding: 0.9rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,20,30,0.2);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            color: #f5c542;
+            font-size: 2.2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: #e2ecfc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            font-size: 1.05rem;
+        }
+
+        nav a:hover {
+            color: #f5c542;
+        }
+
+        .auth-links {
+            display: flex;
+            gap: 0.8rem;
+        }
+        .auth-links a {
+            background: rgba(255,255,255,0.08);
+            padding: 0.5rem 1.3rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.15);
+            font-weight: 500;
+        }
+        .auth-links a:hover {
+            background: #f5c542;
+            color: #0c2638;
+            border-color: #f5c542;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* headings */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0c2638;
+            margin: 2.2rem 0 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 5px;
+            background: #f5c542;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
+
+        /* ----- HERO / AD with real image (city finance) ----- */
+        .ad-frame {
+            border-radius: 2.2rem;
+            margin: 2rem 0 3.5rem;
+            box-shadow: 0 25px 35px -12px rgba(8,40,60,0.3);
+            overflow: hidden;
+            position: relative;
+            background-color: #071e2c; /* fallback */
+        }
+        .ad-bg-image {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center 30%;
+            opacity: 0.3;
+        }
+        .ad-content {
+            position: relative;
+            z-index: 2;
+            padding: 4rem 2.8rem;
+            color: white;
+        }
+        .ad-content h2 {
+            font-size: 2.9rem;
+            font-weight: 700;
+            line-height: 1.2;
+            max-width: 750px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .ad-content p {
+            font-size: 1.3rem;
+            margin: 1.2rem 0 2.3rem;
+            opacity: 0.95;
+            max-width: 600px;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        }
+        .btn {
+            display: inline-block;
+            background: #f5c542;
+            color: #0c2638;
+            padding: 1rem 2.5rem;
+            border-radius: 60px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+            transition: 0.2s;
+            border: none;
+            font-size: 1.15rem;
+            letter-spacing: 0.3px;
+        }
+        .btn:hover {
+            background: #ffd966;
+            transform: scale(1.02);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+        }
+
+        /* ----- product grid: each card contains a real image ----- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.2rem;
+            margin: 3rem 0 5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 14px 30px -8px rgba(12,38,56,0.15);
+            transition: 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #ffffff50;
+            backdrop-filter: blur(2px);
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 40px -14px #0a3144;
+        }
+
+        /* image area with real unsplash photos */
+        .product-img {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding: 1.2rem;
+        }
+        .gold-img {
+            background-image: url('https://images.unsplash.com/photo-1610375461246-83df859d849d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        }
+        .coal-img {
+            background-image: url('https://images.unsplash.com/photo-1584526054005-74a6bcfabce8?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        }
+        .biogas-img {
+            background-image: url('https://images.unsplash.com/photo-1599234168551-072281b1668c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        }
+
+        .product-icon {
+            background: rgba(12,38,56,0.8);
+            backdrop-filter: blur(6px);
+            color: #f5c542;
+            border-radius: 60px;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 1px solid #ffd96660;
+        }
+
+        .product-content {
+            padding: 2rem 1.8rem 2.2rem;
+        }
+        .product-content h3 {
+            font-size: 1.9rem;
+            margin-bottom: 0.6rem;
+            color: #0c2638;
+        }
+        .product-content p {
+            color: #2d475a;
+            margin-bottom: 1.8rem;
+            font-size: 1.05rem;
+        }
+        .product-content .btn {
+            background: #0c2638;
+            color: white;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .product-content .btn:hover {
+            background: #1a3f55;
+        }
+
+        /* ----- TESTIMONIALS with real human images ----- */
+        .testimonials {
+            background: white;
+            border-radius: 3rem 3rem 0 0;
+            padding: 3rem 0 5rem;
+            margin-top: 1.5rem;
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .testimonial-card {
+            background: #f6faff;
+            padding: 2.2rem 2rem 2rem;
+            border-radius: 2.2rem;
+            border: 1px solid #deeaf5;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.02);
+        }
+        .testimonial-text {
+            font-style: italic;
+            color: #1e3647;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-left: 1.3rem;
+            border-left: 4px solid #f5c542;
+            font-size: 1.05rem;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .author-avatar {
+            width: 62px;
+            height: 62px;
+            border-radius: 100px;
+            background-size: cover;
+            background-position: center;
+            background-color: #cbd5e1;
+            border: 3px solid #f5c542;
+        }
+        /* two different real person photos (unsplash) */
+        .avatar-1 {
+            background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        }
+        .avatar-2 {
+            background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        }
+        .avatar-3 {
+            background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        }
+        .author-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.2rem;
+            color: #0c2638;
+        }
+        .author-info p {
+            color: #4b677b;
+            font-size: 0.95rem;
+        }
+
+        /* footer */
+        footer {
+            background: #0c2638;
+            color: #ccddee;
+            padding: 3.5rem 0 1.2rem;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+        }
+        .footer-column p, .footer-column ul {
+            color: #b6cfec;
+            line-height: 1.9;
+        }
+        .footer-column ul {
+            list-style: none;
+        }
+        .footer-column li {
+            margin-bottom: 0.6rem;
+        }
+        .footer-column a {
+            color: #b6cfec;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .footer-column a:hover {
+            color: #f5c542;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+        .social-links a {
+            background: rgba(255,255,255,0.06);
+            width: 44px;
+            height: 44px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+        .footer-bottom {
+            border-top: 1px solid #214e6e;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9cb8d3;
+        }
+
+        /* floating customer care */
+        .customer-care {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #f5c542;
+            width: 68px;
+            height: 68px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: #0c2638;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: 0.15s;
+            z-index: 99;
+            border: 2px solid white;
+        }
+        .customer-care:hover {
+            background: #ffda73;
+            transform: scale(1.08);
+        }
+
+        /* mobile */
+        @media (max-width: 800px) {
+            nav ul { display: none; }
+            .mobile-menu { display: block; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+            .section-title { font-size: 2.2rem; }
+            .ad-content h2 { font-size: 2.2rem; }
+        }
+        @media (max-width: 550px) {
+            .footer-content { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-chart-line"></i> PrimeInvest
+            </a>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li class="auth-links">
+                        <a href="signin.html"><i class="fa-regular fa-user"></i> Sign In</a>
+                        <a href="signup.html" style="background:#f5c542; color:#0c2638; border:none;">Get started</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="page-container">
+        <div class="container">
+            <h1 class="section-title">Welcome to Your Investment Dashboard</h1>
+            
+            <!-- AD with REAL cityscape image -->
+            <div class="ad-frame">
+                <div class="ad-bg-image"></div>   <!-- unsplash financial district -->
+                <div class="ad-content">
+                    <h2>➕ 5% bonus on every new investment · secure & sustainable</h2>
+                    <p>Gold, coal, and biogas projects with real assets. Limited offer – boost your returns today.</p>
+                    <a href="products.html" class="btn">Explore opportunities →</a>
+                </div>
+            </div>
+            
+            <!-- PRODUCT CARDS with REAL mining / energy images -->
+            <div class="product-grid">
+                <!-- Gold -->
+                <div class="product-card">
+                    <div class="product-img gold-img">
+                        <div class="product-icon"><i class="fas fa-gem"></i></div>
+                    </div>
+                    <div class="product-content">
+                        <h3>Gold mining</h3>
+                        <p>Stable returns from proven gold reserves with sustainable extraction methods.</p>
+                        <a href="product-detail.html?product=gold" class="btn">Invest now</a>
+                    </div>
+                </div>
+                <!-- Coal -->
+                <div class="product-card">
+                    <div class="product-img coal-img">
+                        <div class="product-icon"><i class="fas fa-industry"></i></div>
+                    </div>
+                    <div class="product-content">
+                        <h3>Coal mining</h3>
+                        <p>Strategic investments with focus on efficiency and environmental responsibility.</p>
+                        <a href="product-detail.html?product=coal" class="btn">Invest now</a>
+                    </div>
+                </div>
+                <!-- Biogas -->
+                <div class="product-card">
+                    <div class="product-img biogas-img">
+                        <div class="product-icon"><i class="fas fa-recycle"></i></div>
+                    </div>
+                    <div class="product-content">
+                        <h3>Biogas production</h3>
+                        <p>Renewable energy investments with positive environmental impact.</p>
+                        <a href="product-detail.html?product=biogas" class="btn">Invest now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TESTIMONIALS with REAL human faces (unsplash) -->
+            <div class="testimonials">
+                <div class="container">
+                    <h2 class="section-title" style="margin-top: 0;">Recent investor success stories</h2>
+                    <div class="testimonial-grid">
+                        <!-- Robert Wilson - real photo -->
+                        <div class="testimonial-card">
+                            <div class="testimonial-text">
+                                "My investment in gold mining has yielded a 22% return in just 3 months. The process was seamless and the support team was always available to answer my questions."
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar avatar-1"></div>
+                                <div class="author-info">
+                                    <h4>Robert Wilson</h4>
+                                    <p>Gold mining investor</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Emily Davis - real photo -->
+                        <div class="testimonial-card">
+                            <div class="testimonial-text">
+                                "I appreciate how PrimeInvest balances profitability with environmental responsibility. My biogas investment is performing well and I feel good about supporting clean energy."
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar avatar-2"></div>
+                                <div class="author-info">
+                                    <h4>Emily Davis</h4>
+                                    <p>Biogas investor</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Third real person testimonial (added to enrich) -->
+                        <div class="testimonial-card">
+                            <div class="testimonial-text">
+                                "Diversifying into coal with PrimeInvest was smooth. The quarterly payouts are consistent and the online dashboard is crystal clear."
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar avatar-3"></div>
+                                <div class="author-info">
+                                    <h4>Michael Chen</h4>
+                                    <p>Coal & minerals</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>PrimeInvest</h3>
+                    <p>Your trusted partner for secure and profitable investment opportunities in sustainable resources.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="signin.html">Sign In</a></li>
+                        <li><a href="signup.html">Sign Up</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Investment plans</h3>
+                    <ul>
+                        <li><a href="sales-funnel.html?plan=1">1 Month Plan</a></li>
+                        <li><a href="sales-funnel.html?plan=2">2 Month Plan</a></li>
+                        <li><a href="sales-funnel.html?plan=3">3 Month Plan</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Investment Street, Finance City</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@primeinvest.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PrimeInvest. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Customer Care Icon (real email) -->
+    <div class="customer-care" onclick="window.location.href='mailto:felixopemipo@gmail.com'">
+        <i class="fas fa-headset"></i>
+    </div>
+
+    <!-- tiny script to satisfy any legacy placeholder (no external needed) -->
+   
+</body>
+</html>
